@@ -1,0 +1,219 @@
+# Japanese translation for megurio-ssl-manager
+# Copyright (C) 2026 Custom
+msgid ""
+msgstr ""
+"Project-Id-Version: megurio-ssl-manager 1.4.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-20 00:00+0000\n"
+"PO-Revision-Date: 2026-05-20 00:00+0000\n"
+"Last-Translator: Custom\n"
+"Language-Team: Japanese\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Megurio SSL Manager"
+msgstr "Megurio SSL Manager"
+
+msgid "Certificate Settings"
+msgstr "証明書設定"
+
+msgid "Settings"
+msgstr "設定"
+
+msgid "Record not found"
+msgstr "レコードが見つかりません"
+
+msgid "Please click File Verify or DNS Verify first"
+msgstr "先にファイル検証またはDNS検証をクリックしてください"
+
+msgid "Certificate not found or not yet issued"
+msgstr "証明書が存在しないか、まだ発行されていません"
+
+msgid "Certificate files missing: "
+msgstr "証明書ファイルが見つかりません: "
+
+msgid "ZipArchive extension is not enabled."
+msgstr "ZipArchive拡張が無効です。"
+
+msgid "Failed to create ZIP"
+msgstr "ZIP作成に失敗しました"
+
+msgid "Please enter at least one domain"
+msgstr "ドメインを1つ以上入力してください"
+
+msgid "Certificate issued successfully"
+msgstr "証明書の発行が完了しました"
+
+msgid "Error: "
+msgstr "エラー: "
+
+msgid "New Certificate"
+msgstr "新しい証明書"
+
+msgid "One certificate can bind multiple domains (SAN). One domain per line. Wildcards (*.example.com) are supported."
+msgstr "1枚の証明書に複数のドメインを含められます（SAN）。1行に1ドメイン。ワイルドカード（*.example.com）対応。"
+
+msgid "Wildcard domains must also include the base domain (example.com) as a separate entry."
+msgstr "ワイルドカードドメインを使用する場合は、裸ドメイン（example.com）も別途追加してください。"
+
+msgid "Add Certificate Order"
+msgstr "証明書注文を追加"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Bound Domains"
+msgstr "対象ドメイン"
+
+msgid "Count"
+msgstr "件数"
+
+msgid "Status"
+msgstr "状態"
+
+msgid "Created"
+msgstr "作成日時"
+
+msgid "Issued"
+msgstr "発行日時"
+
+msgid "Actions"
+msgstr "操作"
+
+msgid "No records"
+msgstr "レコードなし"
+
+msgid "Pending"
+msgstr "未発行"
+
+msgid "Failed"
+msgstr "失敗"
+
+msgid "%d days remaining"
+msgstr "残り %d 日"
+
+msgid "Expiring soon — please renew"
+msgstr "⚠ もうすぐ期限切れ — 更新してください"
+
+msgid "Renew (File Verify)"
+msgstr "更新（ファイル検証）"
+
+msgid "File Verify"
+msgstr "ファイル検証"
+
+msgid "Renew (DNS Verify)"
+msgstr "更新（DNS検証）"
+
+msgid "DNS Verify"
+msgstr "DNS検証"
+
+msgid "Download"
+msgstr "ダウンロード"
+
+msgid "Confirm delete?"
+msgstr "削除してよろしいですか？"
+
+msgid "Delete"
+msgstr "削除"
+
+msgid "Certificate storage:"
+msgstr "証明書保存先:"
+
+msgid "File Verification"
+msgstr "ファイル検証"
+
+msgid "If this is the current site domain, clicking Verify will create the file automatically."
+msgstr "現在のサイトのドメインの場合、検証ボタンを押すと自動でファイルが作成されます。"
+
+msgid "If auto-renewal is enabled, do not delete the challenge file or directory."
+msgstr "自動更新を有効にしている場合は、チャレンジファイルやディレクトリを削除しないでください。"
+
+msgid "DNS Verification"
+msgstr "DNS検証"
+
+msgid "After adding the DNS TXT record, wait for propagation before clicking Verify."
+msgstr "DNSのTXTレコードを追加後、反映されてから検証ボタンを押してください。"
+
+msgid "If auto-renewal is enabled, do not delete the DNS TXT record."
+msgstr "自動更新を有効にしている場合は、DNS TXTレコードを削除しないでください。"
+
+msgid "Close"
+msgstr "閉じる"
+
+msgid "Verify"
+msgstr "検証"
+
+msgid "Cancel"
+msgstr "キャンセル"
+
+msgid "Settings saved."
+msgstr "設定を保存しました。"
+
+msgid "Certificate Email"
+msgstr "証明書用メールアドレス"
+
+msgid "Used for Let's Encrypt expiry notifications."
+msgstr "Let's Encrypt の証明書期限通知メールの送信先です。"
+
+msgid "Leave blank to use the WordPress admin email (%s)."
+msgstr "空欄の場合はWordPress管理者メール（%s）を使用します。"
+
+msgid "Save Settings"
+msgstr "設定を保存"
+
+msgid "Requesting verification token from Let's Encrypt…"
+msgstr "Let's Encrypt に検証トークンをリクエスト中…"
+
+msgid "Verifying and issuing certificate, please wait (30–60 seconds)…"
+msgstr "検証・証明書発行中です。しばらくお待ちください（30〜60秒）…"
+
+msgid "Request failed"
+msgstr "リクエストに失敗しました"
+
+msgid "Network error, please retry"
+msgstr "ネットワークエラーが発生しました。再試行してください"
+
+msgid "Place file under"
+msgstr "ファイル配置先"
+
+msgid "Filename"
+msgstr "ファイル名"
+
+msgid "File content"
+msgstr "ファイル内容"
+
+msgid "Access to verify"
+msgstr "アクセス確認URL"
+
+msgid "Host record"
+msgstr "ホストレコード"
+
+msgid "Record type"
+msgstr "レコードタイプ"
+
+msgid "Record value"
+msgstr "レコード値"
+
+msgid "Domain"
+msgstr "ドメイン"
+
+msgid "Verification Method"
+msgstr "検証方法"
+
+msgid "Wildcard domains always use DNS verification."
+msgstr "ワイルドカードドメインは常にDNS検証を使用します。"
+
+msgid "This order uses DNS verification"
+msgstr "この注文はDNS検証を使用します"
+
+msgid "This order uses file verification"
+msgstr "この注文はファイル検証を使用します"
+
+msgid "Use the existing verification challenge below, then open File/DNS Verify and click Verify again."
+msgstr "以下の既存の検証チャレンジを使用し、File/DNS Verifyを開いて再度Verifyをクリックしてください。"
+
+msgid "Using the existing pending challenge. No new challenge was requested from Let's Encrypt."
+msgstr "既存の保留中チャレンジを使用しています。Let's Encrypt から新しいチャレンジは取得していません。"

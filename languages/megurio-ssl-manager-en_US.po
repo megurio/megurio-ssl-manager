@@ -1,0 +1,220 @@
+# English (United States) translation for megurio-ssl-manager
+# Copyright (C) 2026 Custom
+# This file is distributed under the same license as the megurio-ssl-manager package.
+msgid ""
+msgstr ""
+"Project-Id-Version: megurio-ssl-manager 1.4.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-20 00:00+0000\n"
+"PO-Revision-Date: 2026-05-20 00:00+0000\n"
+"Last-Translator: Custom\n"
+"Language-Team: English\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Megurio SSL Manager"
+msgstr "Megurio SSL Manager"
+
+msgid "Certificate Settings"
+msgstr "Certificate Settings"
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "Record not found"
+msgstr "Record not found"
+
+msgid "Please click File Verify or DNS Verify first"
+msgstr "Please click File Verify or DNS Verify first"
+
+msgid "Certificate not found or not yet issued"
+msgstr "Certificate not found or not yet issued"
+
+msgid "Certificate files missing: "
+msgstr "Certificate files missing: "
+
+msgid "ZipArchive extension is not enabled."
+msgstr "ZipArchive extension is not enabled."
+
+msgid "Failed to create ZIP"
+msgstr "Failed to create ZIP"
+
+msgid "Please enter at least one domain"
+msgstr "Please enter at least one domain"
+
+msgid "Certificate issued successfully"
+msgstr "Certificate issued successfully"
+
+msgid "Error: "
+msgstr "Error: "
+
+msgid "New Certificate"
+msgstr "New Certificate"
+
+msgid "One certificate can bind multiple domains (SAN). One domain per line. Wildcards (*.example.com) are supported."
+msgstr "One certificate can bind multiple domains (SAN). One domain per line. Wildcards (*.example.com) are supported."
+
+msgid "Wildcard domains must also include the base domain (example.com) as a separate entry."
+msgstr "Wildcard domains must also include the base domain (example.com) as a separate entry."
+
+msgid "Add Certificate Order"
+msgstr "Add Certificate Order"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Bound Domains"
+msgstr "Bound Domains"
+
+msgid "Count"
+msgstr "Count"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Created"
+msgstr "Created"
+
+msgid "Issued"
+msgstr "Issued"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "No records"
+msgstr "No records"
+
+msgid "Pending"
+msgstr "Pending"
+
+msgid "Failed"
+msgstr "Failed"
+
+msgid "%d days remaining"
+msgstr "%d days remaining"
+
+msgid "Expiring soon — please renew"
+msgstr "Expiring soon — please renew"
+
+msgid "Renew (File Verify)"
+msgstr "Renew (File Verify)"
+
+msgid "File Verify"
+msgstr "File Verify"
+
+msgid "Renew (DNS Verify)"
+msgstr "Renew (DNS Verify)"
+
+msgid "DNS Verify"
+msgstr "DNS Verify"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Confirm delete?"
+msgstr "Confirm delete?"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Certificate storage:"
+msgstr "Certificate storage:"
+
+msgid "File Verification"
+msgstr "File Verification"
+
+msgid "If this is the current site domain, clicking Verify will create the file automatically."
+msgstr "If this is the current site domain, clicking Verify will create the file automatically."
+
+msgid "If auto-renewal is enabled, do not delete the challenge file or directory."
+msgstr "If auto-renewal is enabled, do not delete the challenge file or directory."
+
+msgid "DNS Verification"
+msgstr "DNS Verification"
+
+msgid "After adding the DNS TXT record, wait for propagation before clicking Verify."
+msgstr "After adding the DNS TXT record, wait for propagation before clicking Verify."
+
+msgid "If auto-renewal is enabled, do not delete the DNS TXT record."
+msgstr "If auto-renewal is enabled, do not delete the DNS TXT record."
+
+msgid "Close"
+msgstr "Close"
+
+msgid "Verify"
+msgstr "Verify"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Settings saved."
+msgstr "Settings saved."
+
+msgid "Certificate Email"
+msgstr "Certificate Email"
+
+msgid "Used for Let's Encrypt expiry notifications."
+msgstr "Used for Let's Encrypt expiry notifications."
+
+msgid "Leave blank to use the WordPress admin email (%s)."
+msgstr "Leave blank to use the WordPress admin email (%s)."
+
+msgid "Save Settings"
+msgstr "Save Settings"
+
+msgid "Requesting verification token from Let's Encrypt…"
+msgstr "Requesting verification token from Let's Encrypt…"
+
+msgid "Verifying and issuing certificate, please wait (30–60 seconds)…"
+msgstr "Verifying and issuing certificate, please wait (30–60 seconds)…"
+
+msgid "Request failed"
+msgstr "Request failed"
+
+msgid "Network error, please retry"
+msgstr "Network error, please retry"
+
+msgid "Place file under"
+msgstr "Place file under"
+
+msgid "Filename"
+msgstr "Filename"
+
+msgid "File content"
+msgstr "File content"
+
+msgid "Access to verify"
+msgstr "Access to verify"
+
+msgid "Host record"
+msgstr "Host record"
+
+msgid "Record type"
+msgstr "Record type"
+
+msgid "Record value"
+msgstr "Record value"
+
+msgid "Domain"
+msgstr "Domain"
+
+msgid "Verification Method"
+msgstr "Verification Method"
+
+msgid "Wildcard domains always use DNS verification."
+msgstr "Wildcard domains always use DNS verification."
+
+msgid "This order uses DNS verification"
+msgstr "This order uses DNS verification"
+
+msgid "This order uses file verification"
+msgstr "This order uses file verification"
+
+msgid "Use the existing verification challenge below, then open File/DNS Verify and click Verify again."
+msgstr "Use the existing verification challenge below, then open File/DNS Verify and click Verify again."
+
+msgid "Using the existing pending challenge. No new challenge was requested from Let's Encrypt."
+msgstr "Using the existing pending challenge. No new challenge was requested from Let's Encrypt."
