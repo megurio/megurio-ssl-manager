@@ -1,397 +1,379 @@
-# Japanese translation for megurio-ssl-manager
-# Copyright (C) 2026 Custom
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Megurio SSL Manager package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: megurio-ssl-manager 1.5.0\n"
+"Project-Id-Version: Megurio SSL Manager 1.5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-16 13:28+0900\n"
-"PO-Revision-Date: 2026-07-16 04:30+0000\n"
-"Last-Translator: Custom\n"
-"Language-Team: Japanese\n"
-"Language: ja\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: megurio-ssl-manager.php:55 megurio-ssl-manager.php:56
 #: megurio-ssl-manager.php:720
 msgid "Megurio SSL Manager"
-msgstr "Megurio SSL Manager"
+msgstr ""
 
 #: megurio-ssl-manager.php:61 megurio-ssl-manager.php:1011
 msgid "Certificate Settings"
-msgstr "証明書設定"
+msgstr ""
 
 #: megurio-ssl-manager.php:62
 msgid "Settings"
-msgstr "設定"
+msgstr ""
 
 #: megurio-ssl-manager.php:74
 msgid "Requesting verification token from Let's Encrypt…"
-msgstr "Let's Encrypt に検証トークンをリクエスト中…"
+msgstr ""
 
 #: megurio-ssl-manager.php:75
 msgid "Verifying and issuing certificate, please wait (30–60 seconds)…"
-msgstr "検証・証明書発行中です。しばらくお待ちください（30〜60秒）…"
+msgstr ""
 
 #: megurio-ssl-manager.php:76
 msgid "Request failed"
-msgstr "リクエストに失敗しました"
+msgstr ""
 
 #: megurio-ssl-manager.php:77
 msgid "Network error, please retry"
-msgstr "ネットワークエラーが発生しました。再試行してください"
+msgstr ""
 
 #: megurio-ssl-manager.php:78 megurio-ssl-manager.php:971
 msgid "Place file under"
-msgstr "ファイル配置先"
+msgstr ""
 
 #: megurio-ssl-manager.php:79 megurio-ssl-manager.php:972
 msgid "Filename"
-msgstr "ファイル名"
+msgstr ""
 
 #: megurio-ssl-manager.php:80 megurio-ssl-manager.php:973
 msgid "File content"
-msgstr "ファイル内容"
+msgstr ""
 
 #: megurio-ssl-manager.php:81
 msgid "Access to verify"
-msgstr "アクセス確認URL"
+msgstr ""
 
 #: megurio-ssl-manager.php:82 megurio-ssl-manager.php:975
 msgid "Host record"
-msgstr "ホストレコード"
+msgstr ""
 
 #: megurio-ssl-manager.php:83 megurio-ssl-manager.php:976
 msgid "Record type"
-msgstr "レコードタイプ"
+msgstr ""
 
 #: megurio-ssl-manager.php:84 megurio-ssl-manager.php:977
 msgid "Record value"
-msgstr "レコード値"
+msgstr ""
 
 #: megurio-ssl-manager.php:85 megurio-ssl-manager.php:969
 msgid "Domain"
-msgstr "ドメイン"
+msgstr ""
 
 #: megurio-ssl-manager.php:86
 msgid ""
 "Using the existing pending challenge. No new challenge was requested from "
 "Let's Encrypt."
 msgstr ""
-"既存の保留中チャレンジを使用しています。Let's Encrypt から新しいチャレンジは"
-"取得していません。"
 
 #: megurio-ssl-manager.php:104 megurio-ssl-manager.php:139
 msgid "Record not found"
-msgstr "レコードが見つかりません"
+msgstr ""
 
 #: megurio-ssl-manager.php:106
 msgid "This order uses DNS verification"
-msgstr "この注文はDNS検証を使用します"
+msgstr ""
 
 #: megurio-ssl-manager.php:141
 msgid "This order uses file verification"
-msgstr "この注文はファイル検証を使用します"
+msgstr ""
 
 #: megurio-ssl-manager.php:179
 msgid "Please click File Verify or DNS Verify first"
-msgstr "先にファイル検証またはDNS検証をクリックしてください"
+msgstr ""
 
 #: megurio-ssl-manager.php:236
 msgid "Certificate not found or not yet issued"
-msgstr "証明書が存在しないか、まだ発行されていません"
+msgstr ""
 
 #: megurio-ssl-manager.php:243
 msgid "Certificate files missing: "
-msgstr "証明書ファイルが見つかりません: "
+msgstr ""
 
 #: megurio-ssl-manager.php:247
 msgid "ZipArchive extension is not enabled."
-msgstr "ZipArchive拡張が無効です。"
+msgstr ""
 
 #: megurio-ssl-manager.php:256
 msgid "Failed to create temporary ZIP file"
-msgstr "一時ZIPファイルの作成に失敗しました"
+msgstr ""
 
 #: megurio-ssl-manager.php:261
 msgid "Failed to create ZIP"
-msgstr "ZIP作成に失敗しました"
+msgstr ""
 
 #: megurio-ssl-manager.php:292
 msgid "WordPress filesystem is not available."
-msgstr "WordPressファイルシステムを利用できません。"
+msgstr ""
 
 #: megurio-ssl-manager.php:297
 msgid "Failed to read ZIP file"
-msgstr "ZIPファイルの読み込みに失敗しました"
+msgstr ""
 
 #: megurio-ssl-manager.php:324
 msgid "Please enter at least one domain"
-msgstr "ドメインを1つ以上入力してください"
+msgstr ""
 
 #: megurio-ssl-manager.php:373 megurio-ssl-manager.php:377
 msgid "You are not allowed to manage certificates."
-msgstr "証明書を管理する権限がありません。"
+msgstr ""
 
 #: megurio-ssl-manager.php:378
 msgid "Access denied"
-msgstr "アクセス拒否"
+msgstr ""
 
 #: megurio-ssl-manager.php:432
 msgid "Certificate data is busy. Please retry."
-msgstr "証明書データを更新中です。もう一度お試しください。"
+msgstr ""
 
 #: megurio-ssl-manager.php:651
 msgid "HTTP-01 certificate renewed automatically."
-msgstr "HTTP-01証明書を自動更新しました。"
+msgstr ""
 
 #: megurio-ssl-manager.php:677
 #, php-format
 msgid "Automatic renewal attempt %1$d failed: %2$s"
-msgstr "自動更新の%1$d回目の試行に失敗しました: %2$s"
+msgstr ""
 
 #: megurio-ssl-manager.php:723
 msgid "Error: "
-msgstr "エラー: "
+msgstr ""
 
 #: megurio-ssl-manager.php:734
 msgid "Certificate issued successfully"
-msgstr "証明書の発行が完了しました"
+msgstr ""
 
 #: megurio-ssl-manager.php:739 megurio-ssl-manager.php:889
 msgid "Add Certificate Order"
-msgstr "証明書注文を追加"
+msgstr ""
 
 #: megurio-ssl-manager.php:745
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #: megurio-ssl-manager.php:746
 msgid "Bound Domains"
-msgstr "対象ドメイン"
+msgstr ""
 
 #: megurio-ssl-manager.php:747
 msgid "Count"
-msgstr "件数"
+msgstr ""
 
 #: megurio-ssl-manager.php:748 megurio-ssl-manager.php:874
 msgid "Verification Method"
-msgstr "検証方法"
+msgstr ""
 
 #: megurio-ssl-manager.php:749
 msgid "Status"
-msgstr "状態"
+msgstr ""
 
 #: megurio-ssl-manager.php:750
 msgid "Created"
-msgstr "作成日時"
+msgstr ""
 
 #: megurio-ssl-manager.php:751 megurio-ssl-manager.php:760
 msgid "Issued"
-msgstr "発行日時"
+msgstr ""
 
 #: megurio-ssl-manager.php:752
 msgid "Actions"
-msgstr "操作"
+msgstr ""
 
 #: megurio-ssl-manager.php:756
 msgid "No records"
-msgstr "レコードなし"
+msgstr ""
 
 #: megurio-ssl-manager.php:759
 msgid "Pending"
-msgstr "未発行"
+msgstr ""
 
 #: megurio-ssl-manager.php:761
 msgid "Failed"
-msgstr "失敗"
+msgstr ""
 
 #: megurio-ssl-manager.php:776 megurio-ssl-manager.php:816
 #: megurio-ssl-manager.php:881
 msgid "DNS Verify"
-msgstr "DNS検証"
+msgstr ""
 
 #: megurio-ssl-manager.php:776 megurio-ssl-manager.php:808
 #: megurio-ssl-manager.php:877
 msgid "File Verify"
-msgstr "ファイル検証"
+msgstr ""
 
 #: megurio-ssl-manager.php:784
 #, php-format
 msgid "%d days remaining"
-msgstr "残り %d 日"
+msgstr ""
 
 #: megurio-ssl-manager.php:798
 msgid "Expiring soon — please renew"
-msgstr "⚠ もうすぐ期限切れ — 更新してください"
+msgstr ""
 
 #: megurio-ssl-manager.php:807
 msgid "Renew (File Verify)"
-msgstr "更新（ファイル検証）"
+msgstr ""
 
 #: megurio-ssl-manager.php:815
 msgid "Renew (DNS Verify)"
-msgstr "更新（DNS検証）"
+msgstr ""
 
 #: megurio-ssl-manager.php:825
 msgid "Download"
-msgstr "ダウンロード"
+msgstr ""
 
 #: megurio-ssl-manager.php:831
 msgid "Confirm delete?"
-msgstr "削除してよろしいですか？"
+msgstr ""
 
 #: megurio-ssl-manager.php:836
 msgid "Delete"
-msgstr "削除"
+msgstr ""
 
 #: megurio-ssl-manager.php:846
 msgid "Issued certificate data is stored in the WordPress database."
-msgstr "発行済み証明書データはWordPressデータベースに保存されます。"
+msgstr ""
 
 #: megurio-ssl-manager.php:863
 msgid "New Certificate"
-msgstr "新しい証明書"
+msgstr ""
 
 #: megurio-ssl-manager.php:868
 msgid ""
 "One certificate can bind multiple domains (SAN). One domain per line. "
 "Wildcards (*.example.com) are supported."
 msgstr ""
-"1枚の証明書に複数のドメインを含められます（SAN）。1行に1ドメイン。ワイルド"
-"カード（*.example.com）対応。"
 
 #: megurio-ssl-manager.php:869
 msgid ""
 "Wildcard domains must also include the base domain (example.com) as a "
 "separate entry."
 msgstr ""
-"ワイルドカードドメインを使用する場合は、裸ドメイン（example.com）も別途追加し"
-"てください。"
 
 #: megurio-ssl-manager.php:884
 msgid "Wildcard domains always use DNS verification."
-msgstr "ワイルドカードドメインは常にDNS検証を使用します。"
+msgstr ""
 
 #: megurio-ssl-manager.php:892 megurio-ssl-manager.php:940
 msgid "Cancel"
-msgstr "キャンセル"
+msgstr ""
 
 #: megurio-ssl-manager.php:900
 msgid "File Verification"
-msgstr "ファイル検証"
+msgstr ""
 
 #: megurio-ssl-manager.php:902
 msgid ""
 "If this is the current site domain, clicking Verify will create the file "
 "automatically."
 msgstr ""
-"現在のサイトのドメインの場合、検証ボタンを押すと自動でファイルが作成されま"
-"す。"
 
 #: megurio-ssl-manager.php:906
 msgid ""
 "If auto-renewal is enabled, do not delete the challenge file or directory."
 msgstr ""
-"自動更新を有効にしている場合は、チャレンジファイルやディレクトリを削除しない"
-"でください。"
 
 #: megurio-ssl-manager.php:912
 msgid "DNS Verification"
-msgstr "DNS検証"
+msgstr ""
 
 #: megurio-ssl-manager.php:914
 msgid ""
 "After adding the DNS TXT record, wait for propagation before clicking Verify."
-msgstr "DNSのTXTレコードを追加後、反映されてから検証ボタンを押してください。"
+msgstr ""
 
 #: megurio-ssl-manager.php:918
 msgid "If auto-renewal is enabled, do not delete the DNS TXT record."
 msgstr ""
-"自動更新を有効にしている場合は、DNS TXTレコードを削除しないでください。"
 
 #: megurio-ssl-manager.php:925
 msgid "Close"
-msgstr "閉じる"
+msgstr ""
 
 #: megurio-ssl-manager.php:937
 msgid "Verify"
-msgstr "検証"
+msgstr ""
 
 #: megurio-ssl-manager.php:966
 msgid ""
 "Use the existing verification challenge below, then open File/DNS Verify and "
 "click Verify again."
 msgstr ""
-"以下の既存の検証チャレンジを使用し、File/DNS Verifyを開いて再度Verifyをクリッ"
-"クしてください。"
 
 #: megurio-ssl-manager.php:1015
 msgid "Settings saved."
-msgstr "設定を保存しました。"
+msgstr ""
 
 #: megurio-ssl-manager.php:1026
 msgid "Certificate Email"
-msgstr "証明書用メールアドレス"
+msgstr ""
 
 #: megurio-ssl-manager.php:1033
 msgid "Used as the contact address when registering the Let's Encrypt account."
-msgstr "Let's Encryptアカウント登録時の連絡先として使用します。"
+msgstr ""
 
 #: megurio-ssl-manager.php:1037
 #, php-format
 msgid "Leave blank to use the WordPress admin email (%s)."
-msgstr "空欄の場合はWordPress管理者メール（%s）を使用します。"
+msgstr ""
 
 #: megurio-ssl-manager.php:1044
 msgid "HTTP-01 Auto Renewal"
-msgstr "HTTP-01自動更新"
+msgstr ""
 
 #: megurio-ssl-manager.php:1048
 msgid ""
 "Automatically renew HTTP-01 certificates with 30 days or less remaining."
-msgstr "残り30日以下のHTTP-01証明書を自動的に更新します。"
+msgstr ""
 
 #: megurio-ssl-manager.php:1051
 msgid ""
 "WP-Cron must run and every domain must serve this WordPress installation's "
 "webroot. Failures are retried and recorded below."
 msgstr ""
-"WP-Cronが動作し、すべてのドメインがこのWordPressのWebルートを参照している必要"
-"があります。失敗時は再試行し、結果を以下に記録します。"
 
 #: megurio-ssl-manager.php:1059
 msgid "Save Settings"
-msgstr "設定を保存"
+msgstr ""
 
 #: megurio-ssl-manager.php:1064
 msgid "Renewal Log"
-msgstr "更新ログ"
+msgstr ""
 
 #: megurio-ssl-manager.php:1067
 msgid "Time"
-msgstr "日時"
+msgstr ""
 
 #: megurio-ssl-manager.php:1068
 msgid "Level"
-msgstr "レベル"
+msgstr ""
 
 #: megurio-ssl-manager.php:1069
 msgid "Domains"
-msgstr "ドメイン"
+msgstr ""
 
 #: megurio-ssl-manager.php:1070
 msgid "Message"
-msgstr "メッセージ"
+msgstr ""
 
 #: megurio-ssl-manager.php:1074
 msgid "No renewal log entries."
-msgstr "更新ログはありません。"
-
-#~ msgid "Certificate storage:"
-#~ msgstr "証明書保存先:"
-
-#~ msgid "Used for Let's Encrypt expiry notifications."
-#~ msgstr "Let's Encrypt の証明書期限通知メールの送信先です。"
+msgstr ""

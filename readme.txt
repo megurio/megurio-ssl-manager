@@ -4,7 +4,7 @@ Tags: ssl, letsencrypt, certificate, https, acme
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.4.1
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,6 +24,7 @@ Megurio SSL Manager allows you to issue and manage Let's Encrypt SSL/TLS certifi
 * Reuse pending verification challenges while they are still valid; failed validation starts a fresh challenge flow
 * Clean admin workflow with a modal form for adding certificate orders
 * Automatic renewal reminder when certificate expires within 30 days
+* Optional unattended HTTP-01 renewal via WP-Cron with locking, retries, and a renewal log
 * Download certificate files as a ZIP archive (fullchain, cert, chain, private key)
 * Settings page for configuring the email address used for Let's Encrypt account registration
 * Issued certificate data is stored in the WordPress database, not in the plugin directory
@@ -73,7 +74,19 @@ Issued certificate data, including the private key, is stored in the WordPress d
 
 A **Renew** button appears automatically when the certificate has 30 or fewer days remaining before expiry. The renewal button uses the verification method selected when the certificate order was created.
 
+= How does HTTP-01 automatic renewal work? =
+
+Enable it under **Megurio SSL Manager > Settings**. WP-Cron checks twice daily and renews issued HTTP-01 certificates with 30 days or less remaining. The plugin locks overlapping runs, retries failures after increasing delays, and keeps the latest 100 results in the Renewal Log. Every domain in a certificate must serve the current WordPress installation's webroot; DNS-01 certificates still require manual renewal.
+
 == Changelog ==
+
+= 1.5.0 =
+* Added optional HTTP-01 automatic renewal for certificates with 30 days or less remaining
+* Added twice-daily WP-Cron scheduling, global and per-certificate locks, and retry backoff
+* Added a capped renewal log to the settings page
+* Added capability checks to every certificate and settings action
+* Prevented concurrent certificate operations from overwriting newer records
+* Replaced second-based certificate IDs with UUIDs to prevent collisions
 
 = 1.4.1 =
 * Renamed the plugin to Megurio SSL Manager

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Megurio SSL Manager
  * Description: Let's Encrypt SSL certificate manager — multi-domain SAN support
- * Version:     1.4.1
+ * Version:     1.5.0
  * Author:      megurio
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -15,13 +15,36 @@ defined( 'ABSPATH' ) || exit;
 require_once __DIR__ . '/acme-client.php';
 
 define( 'MEGURIO_CERT_GEN_OPTION', 'megurio_cert_gen_data' );
+define( 'MEGURIO_CERT_GEN_LOG_OPTION', 'megurio_cert_gen_logs' );
+define( 'MEGURIO_CERT_GEN_CRON_HOOK', 'megurio_cert_gen_auto_renew' );
+define( 'MEGURIO_CERT_GEN_RETRY_HOOK', 'megurio_cert_gen_auto_renew_retry' );
 
 
 register_activation_hook( __FILE__, 'megurio_cert_gen_activate' );
 
 function megurio_cert_gen_activate() {
     add_option( MEGURIO_CERT_GEN_OPTION, [], '', false );
+    add_option( MEGURIO_CERT_GEN_LOG_OPTION, [], '', false );
+    add_option( 'megurio_cert_gen_auto_renew_enabled', '0', '', false );
+    megurio_cert_gen_maybe_upgrade();
+    if ( ! wp_next_scheduled( MEGURIO_CERT_GEN_CRON_HOOK ) ) {
+        wp_schedule_event( time() + HOUR_IN_SECONDS, 'twicedaily', MEGURIO_CERT_GEN_CRON_HOOK );
+    }
 }
+
+register_deactivation_hook( __FILE__, 'megurio_cert_gen_deactivate' );
+
+function megurio_cert_gen_deactivate() {
+    wp_clear_scheduled_hook( MEGURIO_CERT_GEN_CRON_HOOK );
+    wp_clear_scheduled_hook( MEGURIO_CERT_GEN_RETRY_HOOK );
+}
+
+add_action( 'init', function () {
+    megurio_cert_gen_maybe_upgrade();
+    if ( ! wp_next_scheduled( MEGURIO_CERT_GEN_CRON_HOOK ) ) {
+        wp_schedule_event( time() + HOUR_IN_SECONDS, 'twicedaily', MEGURIO_CERT_GEN_CRON_HOOK );
+    }
+} );
 
 /* ------------------------------------------------------------------ */
 /*  Admin menu + scripts                                                */
@@ -70,9 +93,10 @@ add_action( 'admin_enqueue_scripts', function ( $hook ) {
 /* ------------------------------------------------------------------ */
 
 add_action( 'wp_ajax_megurio_cert_gen_prepare_http', function () {
+    megurio_cert_gen_require_admin( true );
     check_ajax_referer( 'megurio_cert_gen_prepare' );
 
-    $id      = intval( $_POST['id'] ?? 0 );
+    $id      = megurio_cert_gen_request_id( $_POST['id'] ?? '' );
     $staging = ! empty( $_POST['staging'] );
     $email   = megurio_cert_gen_email();
 
@@ -90,7 +114,7 @@ add_action( 'wp_ajax_megurio_cert_gen_prepare_http', function () {
     try {
         $acme = megurio_cert_gen_make_client( $staging, $email );
         $pc   = $acme->megurio_prepare_http01( $row['domains'] );
-        $pc   = array_merge( $pc, [ 'staging' => $staging, 'email' => $email, 'webroot' => get_home_path() ] );
+        $pc   = array_merge( $pc, [ 'staging' => $staging, 'email' => $email, 'webroot' => megurio_cert_gen_home_path() ] );
         megurio_cert_gen_save_pending( $id, $pc );
 
         megurio_cert_gen_send_challenge_success( $id, $pc );
@@ -104,9 +128,10 @@ add_action( 'wp_ajax_megurio_cert_gen_prepare_http', function () {
 /* ------------------------------------------------------------------ */
 
 add_action( 'wp_ajax_megurio_cert_gen_prepare_dns', function () {
+    megurio_cert_gen_require_admin( true );
     check_ajax_referer( 'megurio_cert_gen_prepare' );
 
-    $id      = intval( $_POST['id'] ?? 0 );
+    $id      = megurio_cert_gen_request_id( $_POST['id'] ?? '' );
     $staging = ! empty( $_POST['staging'] );
     $email   = megurio_cert_gen_email();
 
@@ -140,13 +165,14 @@ add_action( 'wp_ajax_megurio_cert_gen_prepare_dns', function () {
 add_action( 'admin_post_megurio_cert_gen_verify', 'megurio_cert_gen_handle_verify' );
 
 function megurio_cert_gen_handle_verify() {
-    $id = intval( $_POST['id'] ?? 0 );
+    megurio_cert_gen_require_admin();
+    $id = megurio_cert_gen_request_id( $_POST['id'] ?? '' );
     check_admin_referer( 'megurio_cert_gen_verify_' . $id );
 
     $data = get_option( MEGURIO_CERT_GEN_OPTION, [] );
     $row  = null;
     foreach ( $data as &$r ) {
-        if ( $r['id'] === $id ) { $row = &$r; break; }
+        if ( megurio_cert_gen_ids_equal( $r['id'] ?? '', $id ) ) { $row = &$r; break; }
     }
     if ( ! $row || empty( $row['pending_challenge'] ) ) {
         wp_safe_redirect( admin_url( 'admin.php?page=megurio-ssl-manager&error=' . urlencode(
@@ -161,29 +187,36 @@ function megurio_cert_gen_handle_verify() {
         $acme   = megurio_cert_gen_make_client( $pc['staging'], $pc['email'] );
         $result = ( $pc['type'] === 'dns-01' )
             ? $acme->megurio_complete_dns01( $pc )
-            : $acme->megurio_complete_http01( $pc, $pc['webroot'] ?? get_home_path() );
+            : $acme->megurio_complete_http01( $pc, $pc['webroot'] ?? megurio_cert_gen_home_path() );
 
-        $row['status']            = 'issued';
-        $row['issued']            = current_time( 'mysql' );
-        $row['certificate']       = [
+        $certificate = [
             'fullchain.pem' => $result['fullchain_pem'],
             'cert.pem'      => $result['cert_pem'],
             'chain.pem'     => $result['chain_pem'],
             'privkey.pem'   => $result['private_key_pem'],
         ];
-        $row['pending_challenge'] = null;
-        update_option( MEGURIO_CERT_GEN_OPTION, $data, false );
+        megurio_cert_gen_update_row( $id, function ( $current ) use ( $certificate ) {
+            $current['status']            = 'issued';
+            $current['issued']            = current_time( 'mysql' );
+            $current['certificate']       = $certificate;
+            $current['pending_challenge'] = null;
+            unset( $current['error_detail'], $current['renewal_attempts'], $current['renewal_next_attempt'], $current['renewal_last_error'] );
+            return $current;
+        } );
 
         wp_safe_redirect( admin_url( 'admin.php?page=megurio-ssl-manager&success=issued' ) );
 
     } catch ( Exception $e ) {
-        $row['status']            = 'error';
-        $row['error_detail']      = $e->getMessage();
-        if ( megurio_cert_gen_should_reset_challenge( $e->getMessage() ) ) {
-            $row['pending_challenge'] = null;
-        }
-        update_option( MEGURIO_CERT_GEN_OPTION, $data, false );
-        $challenge_id = empty( $row['pending_challenge'] ) ? 0 : $id;
+        $reset_challenge = megurio_cert_gen_should_reset_challenge( $e->getMessage() );
+        $updated_row = megurio_cert_gen_update_row( $id, function ( $current ) use ( $e, $reset_challenge ) {
+            $current['status']       = 'error';
+            $current['error_detail'] = $e->getMessage();
+            if ( $reset_challenge ) {
+                $current['pending_challenge'] = null;
+            }
+            return $current;
+        } );
+        $challenge_id = empty( $updated_row['pending_challenge'] ) ? 0 : $id;
         wp_safe_redirect( admin_url( 'admin.php?page=megurio-ssl-manager&challenge_id=' . $challenge_id . '&error=' . urlencode( $e->getMessage() ) ) );
     }
     exit;
@@ -194,7 +227,8 @@ function megurio_cert_gen_handle_verify() {
 /* ------------------------------------------------------------------ */
 
 add_action( 'admin_post_megurio_cert_gen_download', function () {
-    $id = intval( $_GET['id'] ?? 0 );
+    megurio_cert_gen_require_admin();
+    $id = megurio_cert_gen_request_id( $_GET['id'] ?? '' );
     check_admin_referer( 'megurio_cert_gen_download_' . $id );
 
     [ $row ] = megurio_cert_gen_find_row( $id );
@@ -277,6 +311,7 @@ add_action( 'admin_post_megurio_cert_gen_download', function () {
 /* ------------------------------------------------------------------ */
 
 add_action( 'admin_post_megurio_cert_gen_add', function () {
+    megurio_cert_gen_require_admin();
     check_admin_referer( 'megurio_cert_gen_add' );
 
     $raw     = sanitize_textarea_field( wp_unslash( $_POST['domains'] ?? '' ) );
@@ -300,24 +335,27 @@ add_action( 'admin_post_megurio_cert_gen_add', function () {
         $verify_method = 'dns-01';
     }
 
-    $data   = get_option( MEGURIO_CERT_GEN_OPTION, [] );
-    $data[] = [
-        'id'            => time(),
-        'domains'       => $domains,
-        'verify_method' => $verify_method,
-        'status'        => 'pending',
-        'created'       => current_time( 'mysql' ),
-    ];
-    update_option( MEGURIO_CERT_GEN_OPTION, $data, false );
+    megurio_cert_gen_mutate_data( function ( $data ) use ( $domains, $verify_method ) {
+        $data[] = [
+            'id'            => wp_generate_uuid4(),
+            'domains'       => $domains,
+            'verify_method' => $verify_method,
+            'status'        => 'pending',
+            'created'       => current_time( 'mysql' ),
+        ];
+        return $data;
+    } );
     wp_safe_redirect( admin_url( 'admin.php?page=megurio-ssl-manager' ) );
     exit;
 } );
 
 add_action( 'admin_post_megurio_cert_gen_delete', function () {
+    megurio_cert_gen_require_admin();
     check_admin_referer( 'megurio_cert_gen_delete' );
-    $id   = intval( $_POST['id'] ?? 0 );
-    $data = array_values( array_filter( get_option( MEGURIO_CERT_GEN_OPTION, [] ), fn($r) => $r['id'] !== $id ) );
-    update_option( MEGURIO_CERT_GEN_OPTION, $data, false );
+    $id = megurio_cert_gen_request_id( $_POST['id'] ?? '' );
+    megurio_cert_gen_mutate_data( function ( $data ) use ( $id ) {
+        return array_values( array_filter( $data, fn($r) => ! megurio_cert_gen_ids_equal( $r['id'] ?? '', $id ) ) );
+    } );
     wp_safe_redirect( admin_url( 'admin.php?page=megurio-ssl-manager' ) );
     exit;
 } );
@@ -325,6 +363,118 @@ add_action( 'admin_post_megurio_cert_gen_delete', function () {
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                             */
 /* ------------------------------------------------------------------ */
+
+function megurio_cert_gen_require_admin( $ajax = false ) {
+    if ( current_user_can( 'manage_options' ) ) {
+        return;
+    }
+
+    if ( $ajax ) {
+        wp_send_json_error( __( 'You are not allowed to manage certificates.', 'megurio-ssl-manager' ), 403 );
+    }
+
+    wp_die(
+        esc_html__( 'You are not allowed to manage certificates.', 'megurio-ssl-manager' ),
+        esc_html__( 'Access denied', 'megurio-ssl-manager' ),
+        [ 'response' => 403 ]
+    );
+}
+
+function megurio_cert_gen_request_id( $value ) {
+    return sanitize_text_field( wp_unslash( (string) $value ) );
+}
+
+function megurio_cert_gen_home_path() {
+    if ( ! function_exists( 'get_home_path' ) ) {
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+    }
+    return get_home_path();
+}
+
+function megurio_cert_gen_ids_equal( $left, $right ) {
+    return (string) $left === (string) $right;
+}
+
+function megurio_cert_gen_acquire_lock( $name, $ttl = 30, $wait = 5 ) {
+    $key      = 'megurio_cert_gen_lock_' . sanitize_key( $name );
+    $token    = wp_generate_uuid4();
+    $deadline = microtime( true ) + $wait;
+
+    do {
+        if ( add_option( $key, [ 'token' => $token, 'expires' => time() + $ttl ], '', false ) ) {
+            return [ $key, $token ];
+        }
+
+        $existing = get_option( $key );
+        if ( is_array( $existing ) && (int) ( $existing['expires'] ?? 0 ) < time() ) {
+            delete_option( $key );
+            continue;
+        }
+
+        usleep( 100000 );
+    } while ( microtime( true ) < $deadline );
+
+    return null;
+}
+
+function megurio_cert_gen_release_lock( $lock ) {
+    if ( ! is_array( $lock ) ) return;
+    [ $key, $token ] = $lock;
+    $existing = get_option( $key );
+    if ( is_array( $existing ) && hash_equals( (string) ( $existing['token'] ?? '' ), (string) $token ) ) {
+        delete_option( $key );
+    }
+}
+
+function megurio_cert_gen_mutate_data( $callback ) {
+    $lock = megurio_cert_gen_acquire_lock( 'data', 30, 5 );
+    if ( ! $lock ) {
+        throw new RuntimeException( __( 'Certificate data is busy. Please retry.', 'megurio-ssl-manager' ) );
+    }
+
+    try {
+        $data = get_option( MEGURIO_CERT_GEN_OPTION, [] );
+        $data = is_array( $data ) ? $data : [];
+        $next = $callback( $data );
+        update_option( MEGURIO_CERT_GEN_OPTION, is_array( $next ) ? $next : $data, false );
+        return $next;
+    } finally {
+        megurio_cert_gen_release_lock( $lock );
+    }
+}
+
+function megurio_cert_gen_update_row( $id, $callback ) {
+    $updated = null;
+    megurio_cert_gen_mutate_data( function ( $data ) use ( $id, $callback, &$updated ) {
+        foreach ( $data as &$row ) {
+            if ( megurio_cert_gen_ids_equal( $row['id'] ?? '', $id ) ) {
+                $row     = $callback( $row );
+                $updated = $row;
+                break;
+            }
+        }
+        unset( $row );
+        return $data;
+    } );
+    return $updated;
+}
+
+function megurio_cert_gen_maybe_upgrade() {
+    if ( version_compare( (string) get_option( 'megurio_cert_gen_db_version', '0' ), '1.5.0', '>=' ) ) return;
+
+    try {
+        megurio_cert_gen_mutate_data( function ( $data ) {
+            foreach ( $data as &$row ) {
+                $row['id'] = wp_generate_uuid4();
+            }
+            unset( $row );
+            return $data;
+        } );
+        update_option( 'megurio_cert_gen_db_version', '1.5.0', false );
+    } catch ( Throwable $e ) {
+        // A later request retries the migration if certificate data is temporarily busy.
+    }
+}
 
 function megurio_cert_gen_days_remaining( $row ) {
     $certs = megurio_cert_gen_certificate_files( $row );
@@ -377,7 +527,7 @@ function megurio_cert_gen_make_client( $staging, $email ) {
 function megurio_cert_gen_find_row( $id ) {
     $data = get_option( MEGURIO_CERT_GEN_OPTION, [] );
     foreach ( $data as $r ) {
-        if ( $r['id'] === $id ) return [ $r, $data ];
+        if ( megurio_cert_gen_ids_equal( $r['id'] ?? '', $id ) ) return [ $r, $data ];
     }
     return [ null, $data ];
 }
@@ -413,11 +563,144 @@ function megurio_cert_gen_should_reset_challenge( $message ) {
 }
 
 function megurio_cert_gen_save_pending( $id, $pc ) {
-    $data = get_option( MEGURIO_CERT_GEN_OPTION, [] );
-    foreach ( $data as &$r ) {
-        if ( $r['id'] === $id ) { $r['pending_challenge'] = $pc; $r['status'] = 'pending'; break; }
+    megurio_cert_gen_update_row( $id, function ( $row ) use ( $pc ) {
+        $row['pending_challenge'] = $pc;
+        $row['status']            = 'pending';
+        return $row;
+    } );
+}
+
+/* ------------------------------------------------------------------ */
+/*  HTTP-01 automatic renewal                                          */
+/* ------------------------------------------------------------------ */
+
+add_action( MEGURIO_CERT_GEN_CRON_HOOK, 'megurio_cert_gen_run_auto_renewals' );
+add_action( MEGURIO_CERT_GEN_RETRY_HOOK, 'megurio_cert_gen_retry_auto_renewal', 10, 1 );
+
+function megurio_cert_gen_retry_auto_renewal( $id ) {
+    megurio_cert_gen_run_auto_renewals( (string) $id );
+}
+
+function megurio_cert_gen_run_auto_renewals( $only_id = '' ) {
+    if ( get_option( 'megurio_cert_gen_auto_renew_enabled', '0' ) !== '1' ) return;
+
+    $cron_lock = megurio_cert_gen_acquire_lock( 'cron', 30 * MINUTE_IN_SECONDS, 0 );
+    if ( ! $cron_lock ) return;
+
+    try {
+        $data = get_option( MEGURIO_CERT_GEN_OPTION, [] );
+        foreach ( $data as $row ) {
+            $id = (string) ( $row['id'] ?? '' );
+            if ( $only_id && ! megurio_cert_gen_ids_equal( $id, $only_id ) ) continue;
+            if ( ( $row['status'] ?? '' ) !== 'issued' ) continue;
+            if ( megurio_cert_gen_verify_method( $row ) !== 'http-01' ) continue;
+            if ( (int) ( $row['renewal_next_attempt'] ?? 0 ) > time() ) continue;
+
+            $days = megurio_cert_gen_days_remaining( $row );
+            if ( $days === null || $days > 30 ) continue;
+
+            megurio_cert_gen_auto_renew_row( $id );
+        }
+    } finally {
+        megurio_cert_gen_release_lock( $cron_lock );
     }
-    update_option( MEGURIO_CERT_GEN_OPTION, $data, false );
+}
+
+function megurio_cert_gen_auto_renew_row( $id ) {
+    $row_lock = megurio_cert_gen_acquire_lock( 'renew_' . md5( (string) $id ), 20 * MINUTE_IN_SECONDS, 0 );
+    if ( ! $row_lock ) return;
+
+    try {
+        [ $row ] = megurio_cert_gen_find_row( $id );
+        if ( ! $row || ( $row['status'] ?? '' ) !== 'issued' || megurio_cert_gen_verify_method( $row ) !== 'http-01' ) return;
+
+        $domains = array_values( array_filter( $row['domains'] ?? [] ) );
+        if ( ! $domains ) return;
+
+        $pc = megurio_cert_gen_pending_challenge( $row, 'http-01' );
+        if ( ! $pc ) {
+            $email = megurio_cert_gen_email();
+            $acme  = megurio_cert_gen_make_client( false, $email );
+            $pc    = $acme->megurio_prepare_http01( $domains );
+            $pc    = array_merge( $pc, [ 'staging' => false, 'email' => $email, 'webroot' => megurio_cert_gen_home_path() ] );
+            megurio_cert_gen_update_row( $id, function ( $current ) use ( $pc ) {
+                $current['pending_challenge'] = $pc;
+                return $current;
+            } );
+        } else {
+            $acme = megurio_cert_gen_make_client( ! empty( $pc['staging'] ), $pc['email'] ?? megurio_cert_gen_email() );
+        }
+
+        $result = $acme->megurio_complete_http01( $pc, $pc['webroot'] ?? megurio_cert_gen_home_path() );
+        $certificate = [
+            'fullchain.pem' => $result['fullchain_pem'],
+            'cert.pem'      => $result['cert_pem'],
+            'chain.pem'     => $result['chain_pem'],
+            'privkey.pem'   => $result['private_key_pem'],
+        ];
+
+        megurio_cert_gen_update_row( $id, function ( $current ) use ( $certificate ) {
+            $current['status']            = 'issued';
+            $current['issued']            = current_time( 'mysql' );
+            $current['certificate']       = $certificate;
+            $current['pending_challenge'] = null;
+            unset( $current['error_detail'], $current['renewal_attempts'], $current['renewal_next_attempt'], $current['renewal_last_error'] );
+            return $current;
+        } );
+
+        megurio_cert_gen_log( 'success', $domains, __( 'HTTP-01 certificate renewed automatically.', 'megurio-ssl-manager' ) );
+    } catch ( Throwable $e ) {
+        [ $latest ] = megurio_cert_gen_find_row( $id );
+        $domains    = array_values( array_filter( $latest['domains'] ?? [] ) );
+        $attempts   = (int) ( $latest['renewal_attempts'] ?? 0 ) + 1;
+        $delays     = [ HOUR_IN_SECONDS, 6 * HOUR_IN_SECONDS, DAY_IN_SECONDS ];
+        $delay      = $delays[ min( $attempts - 1, count( $delays ) - 1 ) ];
+        $next       = time() + $delay;
+        $reset      = megurio_cert_gen_should_reset_challenge( $e->getMessage() );
+
+        megurio_cert_gen_update_row( $id, function ( $current ) use ( $attempts, $next, $e, $reset ) {
+            $current['renewal_attempts']     = $attempts;
+            $current['renewal_next_attempt'] = $next;
+            $current['renewal_last_error']   = sanitize_text_field( $e->getMessage() );
+            if ( $reset ) $current['pending_challenge'] = null;
+            return $current;
+        } );
+
+        if ( ! wp_next_scheduled( MEGURIO_CERT_GEN_RETRY_HOOK, [ (string) $id ] ) ) {
+            wp_schedule_single_event( $next, MEGURIO_CERT_GEN_RETRY_HOOK, [ (string) $id ] );
+        }
+        megurio_cert_gen_log(
+            'error',
+            $domains,
+            sprintf(
+                /* translators: 1: attempt number, 2: error message */
+                __( 'Automatic renewal attempt %1$d failed: %2$s', 'megurio-ssl-manager' ),
+                $attempts,
+                sanitize_text_field( $e->getMessage() )
+            )
+        );
+    } finally {
+        megurio_cert_gen_release_lock( $row_lock );
+    }
+}
+
+function megurio_cert_gen_log( $level, $domains, $message ) {
+    $lock = megurio_cert_gen_acquire_lock( 'logs', 15, 2 );
+    if ( ! $lock ) return;
+
+    try {
+        $logs   = get_option( MEGURIO_CERT_GEN_LOG_OPTION, [] );
+        $logs   = is_array( $logs ) ? $logs : [];
+        $logs[] = [
+            'time'    => current_time( 'mysql' ),
+            'level'   => sanitize_key( $level ),
+            'domains' => array_map( 'sanitize_text_field', (array) $domains ),
+            'message' => sanitize_text_field( $message ),
+        ];
+        update_option( MEGURIO_CERT_GEN_LOG_OPTION, array_slice( $logs, -100 ), false );
+    } finally {
+        megurio_cert_gen_release_lock( $lock );
+    }
 }
 
 /* ------------------------------------------------------------------ */
@@ -704,6 +987,7 @@ function megurio_cert_gen_render_challenge_notice( $pc ) {
 /* ------------------------------------------------------------------ */
 
 add_action( 'admin_post_megurio_cert_gen_save_settings', function () {
+    megurio_cert_gen_require_admin();
     check_admin_referer( 'megurio_cert_gen_settings' );
     $email = sanitize_email( wp_unslash( $_POST['megurio_cert_gen_email'] ?? '' ) );
     if ( $email ) {
@@ -711,12 +995,15 @@ add_action( 'admin_post_megurio_cert_gen_save_settings', function () {
     } else {
         delete_option( 'megurio_cert_gen_email' );
     }
+    update_option( 'megurio_cert_gen_auto_renew_enabled', ! empty( $_POST['megurio_cert_gen_auto_renew_enabled'] ) ? '1' : '0', false );
     wp_safe_redirect( admin_url( 'admin.php?page=megurio-ssl-manager-settings&saved=1' ) );
     exit;
 } );
 
 function megurio_cert_gen_settings_page() {
     $current = get_option( 'megurio_cert_gen_email', '' );
+    $auto_renew_enabled = get_option( 'megurio_cert_gen_auto_renew_enabled', '0' ) === '1';
+    $logs = get_option( MEGURIO_CERT_GEN_LOG_OPTION, [] );
     // phpcs:ignore WordPress.Security.NonceVerification.Recommended
     $saved   = ! empty( $_GET['saved'] );
     ?>
@@ -743,13 +1030,25 @@ function megurio_cert_gen_settings_page() {
                                placeholder="<?php echo esc_attr( get_option( 'admin_email' ) ); ?>"
                                class="regular-text">
                         <p class="description">
-                            <?php esc_html_e( "Used for Let's Encrypt expiry notifications.", 'megurio-ssl-manager' ); ?><br>
+                            <?php esc_html_e( "Used as the contact address when registering the Let's Encrypt account.", 'megurio-ssl-manager' ); ?><br>
                             <?php
                             echo esc_html( sprintf(
                                 /* translators: %s: admin email address */
                                 __( 'Leave blank to use the WordPress admin email (%s).', 'megurio-ssl-manager' ),
                                 get_option( 'admin_email' )
                             ) ); ?>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <th><?php esc_html_e( 'HTTP-01 Auto Renewal', 'megurio-ssl-manager' ); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="megurio_cert_gen_auto_renew_enabled" value="1" <?php checked( $auto_renew_enabled ); ?>>
+                            <?php esc_html_e( 'Automatically renew HTTP-01 certificates with 30 days or less remaining.', 'megurio-ssl-manager' ); ?>
+                        </label>
+                        <p class="description">
+                            <?php esc_html_e( 'WP-Cron must run and every domain must serve this WordPress installation\'s webroot. Failures are retried and recorded below.', 'megurio-ssl-manager' ); ?>
                         </p>
                     </td>
                 </tr>
@@ -761,6 +1060,28 @@ function megurio_cert_gen_settings_page() {
                 </button>
             </p>
         </form>
+
+        <h2><?php esc_html_e( 'Renewal Log', 'megurio-ssl-manager' ); ?></h2>
+        <table class="widefat striped" style="max-width:900px">
+            <thead><tr>
+                <th><?php esc_html_e( 'Time', 'megurio-ssl-manager' ); ?></th>
+                <th><?php esc_html_e( 'Level', 'megurio-ssl-manager' ); ?></th>
+                <th><?php esc_html_e( 'Domains', 'megurio-ssl-manager' ); ?></th>
+                <th><?php esc_html_e( 'Message', 'megurio-ssl-manager' ); ?></th>
+            </tr></thead>
+            <tbody>
+            <?php if ( empty( $logs ) ) : ?>
+                <tr><td colspan="4"><?php esc_html_e( 'No renewal log entries.', 'megurio-ssl-manager' ); ?></td></tr>
+            <?php else : foreach ( array_reverse( $logs ) as $entry ) : ?>
+                <tr>
+                    <td><?php echo esc_html( $entry['time'] ?? '' ); ?></td>
+                    <td><?php echo esc_html( strtoupper( $entry['level'] ?? 'info' ) ); ?></td>
+                    <td><?php echo esc_html( implode( ', ', $entry['domains'] ?? [] ) ); ?></td>
+                    <td><?php echo esc_html( $entry['message'] ?? '' ); ?></td>
+                </tr>
+            <?php endforeach; endif; ?>
+            </tbody>
+        </table>
     </div>
     <?php
 }

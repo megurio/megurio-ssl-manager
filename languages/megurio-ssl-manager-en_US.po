@@ -1,13 +1,15 @@
-# English (United States) translation for megurio-ssl-manager
-# Copyright (C) 2026 Custom
-# This file is distributed under the same license as the megurio-ssl-manager package.
+# English (United States) translation for Megurio SSL Manager.
+# Copyright (C) 2026 megurio
+# This file is distributed under the same license as the Megurio SSL Manager package.
+# megurio, 2026.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: megurio-ssl-manager 1.4.1\n"
+"Project-Id-Version: Megurio SSL Manager 1.5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-20 00:00+0000\n"
-"PO-Revision-Date: 2026-05-20 00:00+0000\n"
-"Last-Translator: Custom\n"
+"POT-Creation-Date: 2026-07-16 13:28+0900\n"
+"PO-Revision-Date: 2026-07-16 04:30+0000\n"
+"Last-Translator: megurio\n"
 "Language-Team: English\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
@@ -15,206 +17,379 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: megurio-ssl-manager.php:55 megurio-ssl-manager.php:56
+#: megurio-ssl-manager.php:720
 msgid "Megurio SSL Manager"
 msgstr "Megurio SSL Manager"
 
+#: megurio-ssl-manager.php:61 megurio-ssl-manager.php:1011
 msgid "Certificate Settings"
 msgstr "Certificate Settings"
 
+#: megurio-ssl-manager.php:62
 msgid "Settings"
 msgstr "Settings"
 
-msgid "Record not found"
-msgstr "Record not found"
-
-msgid "Please click File Verify or DNS Verify first"
-msgstr "Please click File Verify or DNS Verify first"
-
-msgid "Certificate not found or not yet issued"
-msgstr "Certificate not found or not yet issued"
-
-msgid "Certificate files missing: "
-msgstr "Certificate files missing: "
-
-msgid "ZipArchive extension is not enabled."
-msgstr "ZipArchive extension is not enabled."
-
-msgid "Failed to create ZIP"
-msgstr "Failed to create ZIP"
-
-msgid "Please enter at least one domain"
-msgstr "Please enter at least one domain"
-
-msgid "Certificate issued successfully"
-msgstr "Certificate issued successfully"
-
-msgid "Error: "
-msgstr "Error: "
-
-msgid "New Certificate"
-msgstr "New Certificate"
-
-msgid "One certificate can bind multiple domains (SAN). One domain per line. Wildcards (*.example.com) are supported."
-msgstr "One certificate can bind multiple domains (SAN). One domain per line. Wildcards (*.example.com) are supported."
-
-msgid "Wildcard domains must also include the base domain (example.com) as a separate entry."
-msgstr "Wildcard domains must also include the base domain (example.com) as a separate entry."
-
-msgid "Add Certificate Order"
-msgstr "Add Certificate Order"
-
-msgid "ID"
-msgstr "ID"
-
-msgid "Bound Domains"
-msgstr "Bound Domains"
-
-msgid "Count"
-msgstr "Count"
-
-msgid "Status"
-msgstr "Status"
-
-msgid "Created"
-msgstr "Created"
-
-msgid "Issued"
-msgstr "Issued"
-
-msgid "Actions"
-msgstr "Actions"
-
-msgid "No records"
-msgstr "No records"
-
-msgid "Pending"
-msgstr "Pending"
-
-msgid "Failed"
-msgstr "Failed"
-
-msgid "%d days remaining"
-msgstr "%d days remaining"
-
-msgid "Expiring soon — please renew"
-msgstr "Expiring soon — please renew"
-
-msgid "Renew (File Verify)"
-msgstr "Renew (File Verify)"
-
-msgid "File Verify"
-msgstr "File Verify"
-
-msgid "Renew (DNS Verify)"
-msgstr "Renew (DNS Verify)"
-
-msgid "DNS Verify"
-msgstr "DNS Verify"
-
-msgid "Download"
-msgstr "Download"
-
-msgid "Confirm delete?"
-msgstr "Confirm delete?"
-
-msgid "Delete"
-msgstr "Delete"
-
-msgid "Certificate storage:"
-msgstr "Certificate storage:"
-
-msgid "File Verification"
-msgstr "File Verification"
-
-msgid "If this is the current site domain, clicking Verify will create the file automatically."
-msgstr "If this is the current site domain, clicking Verify will create the file automatically."
-
-msgid "If auto-renewal is enabled, do not delete the challenge file or directory."
-msgstr "If auto-renewal is enabled, do not delete the challenge file or directory."
-
-msgid "DNS Verification"
-msgstr "DNS Verification"
-
-msgid "After adding the DNS TXT record, wait for propagation before clicking Verify."
-msgstr "After adding the DNS TXT record, wait for propagation before clicking Verify."
-
-msgid "If auto-renewal is enabled, do not delete the DNS TXT record."
-msgstr "If auto-renewal is enabled, do not delete the DNS TXT record."
-
-msgid "Close"
-msgstr "Close"
-
-msgid "Verify"
-msgstr "Verify"
-
-msgid "Cancel"
-msgstr "Cancel"
-
-msgid "Settings saved."
-msgstr "Settings saved."
-
-msgid "Certificate Email"
-msgstr "Certificate Email"
-
-msgid "Used for Let's Encrypt expiry notifications."
-msgstr "Used for Let's Encrypt expiry notifications."
-
-msgid "Leave blank to use the WordPress admin email (%s)."
-msgstr "Leave blank to use the WordPress admin email (%s)."
-
-msgid "Save Settings"
-msgstr "Save Settings"
-
+#: megurio-ssl-manager.php:74
 msgid "Requesting verification token from Let's Encrypt…"
 msgstr "Requesting verification token from Let's Encrypt…"
 
+#: megurio-ssl-manager.php:75
 msgid "Verifying and issuing certificate, please wait (30–60 seconds)…"
 msgstr "Verifying and issuing certificate, please wait (30–60 seconds)…"
 
+#: megurio-ssl-manager.php:76
 msgid "Request failed"
 msgstr "Request failed"
 
+#: megurio-ssl-manager.php:77
 msgid "Network error, please retry"
 msgstr "Network error, please retry"
 
+#: megurio-ssl-manager.php:78 megurio-ssl-manager.php:971
 msgid "Place file under"
 msgstr "Place file under"
 
+#: megurio-ssl-manager.php:79 megurio-ssl-manager.php:972
 msgid "Filename"
 msgstr "Filename"
 
+#: megurio-ssl-manager.php:80 megurio-ssl-manager.php:973
 msgid "File content"
 msgstr "File content"
 
+#: megurio-ssl-manager.php:81
 msgid "Access to verify"
 msgstr "Access to verify"
 
+#: megurio-ssl-manager.php:82 megurio-ssl-manager.php:975
 msgid "Host record"
 msgstr "Host record"
 
+#: megurio-ssl-manager.php:83 megurio-ssl-manager.php:976
 msgid "Record type"
 msgstr "Record type"
 
+#: megurio-ssl-manager.php:84 megurio-ssl-manager.php:977
 msgid "Record value"
 msgstr "Record value"
 
+#: megurio-ssl-manager.php:85 megurio-ssl-manager.php:969
 msgid "Domain"
 msgstr "Domain"
 
-msgid "Verification Method"
-msgstr "Verification Method"
+#: megurio-ssl-manager.php:86
+msgid ""
+"Using the existing pending challenge. No new challenge was requested from "
+"Let's Encrypt."
+msgstr ""
+"Using the existing pending challenge. No new challenge was requested from "
+"Let's Encrypt."
 
-msgid "Wildcard domains always use DNS verification."
-msgstr "Wildcard domains always use DNS verification."
+#: megurio-ssl-manager.php:104 megurio-ssl-manager.php:139
+msgid "Record not found"
+msgstr "Record not found"
 
+#: megurio-ssl-manager.php:106
 msgid "This order uses DNS verification"
 msgstr "This order uses DNS verification"
 
+#: megurio-ssl-manager.php:141
 msgid "This order uses file verification"
 msgstr "This order uses file verification"
 
-msgid "Use the existing verification challenge below, then open File/DNS Verify and click Verify again."
-msgstr "Use the existing verification challenge below, then open File/DNS Verify and click Verify again."
+#: megurio-ssl-manager.php:179
+msgid "Please click File Verify or DNS Verify first"
+msgstr "Please click File Verify or DNS Verify first"
 
-msgid "Using the existing pending challenge. No new challenge was requested from Let's Encrypt."
-msgstr "Using the existing pending challenge. No new challenge was requested from Let's Encrypt."
+#: megurio-ssl-manager.php:236
+msgid "Certificate not found or not yet issued"
+msgstr "Certificate not found or not yet issued"
+
+#: megurio-ssl-manager.php:243
+msgid "Certificate files missing: "
+msgstr "Certificate files missing: "
+
+#: megurio-ssl-manager.php:247
+msgid "ZipArchive extension is not enabled."
+msgstr "ZipArchive extension is not enabled."
+
+#: megurio-ssl-manager.php:256
+msgid "Failed to create temporary ZIP file"
+msgstr "Failed to create temporary ZIP file"
+
+#: megurio-ssl-manager.php:261
+msgid "Failed to create ZIP"
+msgstr "Failed to create ZIP"
+
+#: megurio-ssl-manager.php:292
+msgid "WordPress filesystem is not available."
+msgstr "WordPress filesystem is not available."
+
+#: megurio-ssl-manager.php:297
+msgid "Failed to read ZIP file"
+msgstr "Failed to read ZIP file"
+
+#: megurio-ssl-manager.php:324
+msgid "Please enter at least one domain"
+msgstr "Please enter at least one domain"
+
+#: megurio-ssl-manager.php:373 megurio-ssl-manager.php:377
+msgid "You are not allowed to manage certificates."
+msgstr "You are not allowed to manage certificates."
+
+#: megurio-ssl-manager.php:378
+msgid "Access denied"
+msgstr "Access denied"
+
+#: megurio-ssl-manager.php:432
+msgid "Certificate data is busy. Please retry."
+msgstr "Certificate data is busy. Please retry."
+
+#: megurio-ssl-manager.php:651
+msgid "HTTP-01 certificate renewed automatically."
+msgstr "HTTP-01 certificate renewed automatically."
+
+#: megurio-ssl-manager.php:677
+#, php-format
+msgid "Automatic renewal attempt %1$d failed: %2$s"
+msgstr "Automatic renewal attempt %1$d failed: %2$s"
+
+#: megurio-ssl-manager.php:723
+msgid "Error: "
+msgstr "Error: "
+
+#: megurio-ssl-manager.php:734
+msgid "Certificate issued successfully"
+msgstr "Certificate issued successfully"
+
+#: megurio-ssl-manager.php:739 megurio-ssl-manager.php:889
+msgid "Add Certificate Order"
+msgstr "Add Certificate Order"
+
+#: megurio-ssl-manager.php:745
+msgid "ID"
+msgstr "ID"
+
+#: megurio-ssl-manager.php:746
+msgid "Bound Domains"
+msgstr "Bound Domains"
+
+#: megurio-ssl-manager.php:747
+msgid "Count"
+msgstr "Count"
+
+#: megurio-ssl-manager.php:748 megurio-ssl-manager.php:874
+msgid "Verification Method"
+msgstr "Verification Method"
+
+#: megurio-ssl-manager.php:749
+msgid "Status"
+msgstr "Status"
+
+#: megurio-ssl-manager.php:750
+msgid "Created"
+msgstr "Created"
+
+#: megurio-ssl-manager.php:751 megurio-ssl-manager.php:760
+msgid "Issued"
+msgstr "Issued"
+
+#: megurio-ssl-manager.php:752
+msgid "Actions"
+msgstr "Actions"
+
+#: megurio-ssl-manager.php:756
+msgid "No records"
+msgstr "No records"
+
+#: megurio-ssl-manager.php:759
+msgid "Pending"
+msgstr "Pending"
+
+#: megurio-ssl-manager.php:761
+msgid "Failed"
+msgstr "Failed"
+
+#: megurio-ssl-manager.php:776 megurio-ssl-manager.php:816
+#: megurio-ssl-manager.php:881
+msgid "DNS Verify"
+msgstr "DNS Verify"
+
+#: megurio-ssl-manager.php:776 megurio-ssl-manager.php:808
+#: megurio-ssl-manager.php:877
+msgid "File Verify"
+msgstr "File Verify"
+
+#: megurio-ssl-manager.php:784
+#, php-format
+msgid "%d days remaining"
+msgstr "%d days remaining"
+
+#: megurio-ssl-manager.php:798
+msgid "Expiring soon — please renew"
+msgstr "Expiring soon — please renew"
+
+#: megurio-ssl-manager.php:807
+msgid "Renew (File Verify)"
+msgstr "Renew (File Verify)"
+
+#: megurio-ssl-manager.php:815
+msgid "Renew (DNS Verify)"
+msgstr "Renew (DNS Verify)"
+
+#: megurio-ssl-manager.php:825
+msgid "Download"
+msgstr "Download"
+
+#: megurio-ssl-manager.php:831
+msgid "Confirm delete?"
+msgstr "Confirm delete?"
+
+#: megurio-ssl-manager.php:836
+msgid "Delete"
+msgstr "Delete"
+
+#: megurio-ssl-manager.php:846
+msgid "Issued certificate data is stored in the WordPress database."
+msgstr "Issued certificate data is stored in the WordPress database."
+
+#: megurio-ssl-manager.php:863
+msgid "New Certificate"
+msgstr "New Certificate"
+
+#: megurio-ssl-manager.php:868
+msgid ""
+"One certificate can bind multiple domains (SAN). One domain per line. "
+"Wildcards (*.example.com) are supported."
+msgstr ""
+"One certificate can bind multiple domains (SAN). One domain per line. "
+"Wildcards (*.example.com) are supported."
+
+#: megurio-ssl-manager.php:869
+msgid ""
+"Wildcard domains must also include the base domain (example.com) as a "
+"separate entry."
+msgstr ""
+"Wildcard domains must also include the base domain (example.com) as a "
+"separate entry."
+
+#: megurio-ssl-manager.php:884
+msgid "Wildcard domains always use DNS verification."
+msgstr "Wildcard domains always use DNS verification."
+
+#: megurio-ssl-manager.php:892 megurio-ssl-manager.php:940
+msgid "Cancel"
+msgstr "Cancel"
+
+#: megurio-ssl-manager.php:900
+msgid "File Verification"
+msgstr "File Verification"
+
+#: megurio-ssl-manager.php:902
+msgid ""
+"If this is the current site domain, clicking Verify will create the file "
+"automatically."
+msgstr ""
+"If this is the current site domain, clicking Verify will create the file "
+"automatically."
+
+#: megurio-ssl-manager.php:906
+msgid ""
+"If auto-renewal is enabled, do not delete the challenge file or directory."
+msgstr ""
+"If auto-renewal is enabled, do not delete the challenge file or directory."
+
+#: megurio-ssl-manager.php:912
+msgid "DNS Verification"
+msgstr "DNS Verification"
+
+#: megurio-ssl-manager.php:914
+msgid ""
+"After adding the DNS TXT record, wait for propagation before clicking Verify."
+msgstr ""
+"After adding the DNS TXT record, wait for propagation before clicking Verify."
+
+#: megurio-ssl-manager.php:918
+msgid "If auto-renewal is enabled, do not delete the DNS TXT record."
+msgstr "If auto-renewal is enabled, do not delete the DNS TXT record."
+
+#: megurio-ssl-manager.php:925
+msgid "Close"
+msgstr "Close"
+
+#: megurio-ssl-manager.php:937
+msgid "Verify"
+msgstr "Verify"
+
+#: megurio-ssl-manager.php:966
+msgid ""
+"Use the existing verification challenge below, then open File/DNS Verify and "
+"click Verify again."
+msgstr ""
+"Use the existing verification challenge below, then open File/DNS Verify and "
+"click Verify again."
+
+#: megurio-ssl-manager.php:1015
+msgid "Settings saved."
+msgstr "Settings saved."
+
+#: megurio-ssl-manager.php:1026
+msgid "Certificate Email"
+msgstr "Certificate Email"
+
+#: megurio-ssl-manager.php:1033
+msgid "Used as the contact address when registering the Let's Encrypt account."
+msgstr ""
+"Used as the contact address when registering the Let's Encrypt account."
+
+#: megurio-ssl-manager.php:1037
+#, php-format
+msgid "Leave blank to use the WordPress admin email (%s)."
+msgstr "Leave blank to use the WordPress admin email (%s)."
+
+#: megurio-ssl-manager.php:1044
+msgid "HTTP-01 Auto Renewal"
+msgstr "HTTP-01 Auto Renewal"
+
+#: megurio-ssl-manager.php:1048
+msgid ""
+"Automatically renew HTTP-01 certificates with 30 days or less remaining."
+msgstr ""
+"Automatically renew HTTP-01 certificates with 30 days or less remaining."
+
+#: megurio-ssl-manager.php:1051
+msgid ""
+"WP-Cron must run and every domain must serve this WordPress installation's "
+"webroot. Failures are retried and recorded below."
+msgstr ""
+"WP-Cron must run and every domain must serve this WordPress installation's "
+"webroot. Failures are retried and recorded below."
+
+#: megurio-ssl-manager.php:1059
+msgid "Save Settings"
+msgstr "Save Settings"
+
+#: megurio-ssl-manager.php:1064
+msgid "Renewal Log"
+msgstr "Renewal Log"
+
+#: megurio-ssl-manager.php:1067
+msgid "Time"
+msgstr "Time"
+
+#: megurio-ssl-manager.php:1068
+msgid "Level"
+msgstr "Level"
+
+#: megurio-ssl-manager.php:1069
+msgid "Domains"
+msgstr "Domains"
+
+#: megurio-ssl-manager.php:1070
+msgid "Message"
+msgstr "Message"
+
+#: megurio-ssl-manager.php:1074
+msgid "No renewal log entries."
+msgstr "No renewal log entries."
